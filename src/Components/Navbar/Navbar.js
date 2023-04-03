@@ -1,63 +1,89 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo-trans.png";
+import { AuthContext } from "../../context/AuthProvider/AuthProvider";
+import { toast } from "react-toastify";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { logoutUser, user } = useContext(AuthContext);
+  const handleLogOut = () => {
+    logoutUser()
+      .then(() => {
+        toast.success("Successfully Logout!!!");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+  const location = useLocation();
+  // console.log(location.pathname);
   const menu = (
     <>
-      <li>
-        <Link
-          to="/create-todos"
-          className="font-medium tracking-wide text-black hover:text-secondary  transition-colors duration-200 "
-        >
-          Create Todos
-        </Link>
-      </li>
-      <li>
-        <Link
-          to="/my-todos"
-          className="font-medium tracking-wide text-black hover:text-secondary transition-colors duration-200 "
-        >
-          My Todos
-        </Link>
-      </li>
-      <li>
-        <Link
-          to="/login"
-          className="font-medium tracking-wide text-black btn btn-sm btn-primary"
-        >
-          Login
-        </Link>
-      </li>
-      <li>
-        <Link
-          to="/"
-          className="font-medium tracking-wide text-black btn btn-sm btn-primary"
-        >
-          Register
-        </Link>
-      </li>
-      <li>
-        <Link
-          to="/"
-          className="font-medium tracking-wide text-white btn btn-sm btn-error"
-        >
-          Logout
-        </Link>
-      </li>
+      {user?.uid ? (
+        <>
+          <li>
+            <Link
+              to="/create-todos"
+              className="font-medium tracking-wide text-black hover:text-secondary  transition-colors duration-200 "
+            >
+              Create Todos
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/my-todos"
+              className="font-medium tracking-wide text-black hover:text-secondary transition-colors duration-200 "
+            >
+              My Todos
+            </Link>
+          </li>
+          <li>
+            <p className="font-bold text-secondary tracking-wide hover:text-secondary transition-colors duration-200 ">
+              Welcome {user?.email}
+            </p>
+          </li>
+          <li>
+            <Link
+              to="/"
+              onClick={handleLogOut}
+              className="font-medium tracking-wide text-white btn btn-sm btn-error"
+            >
+              Logout
+            </Link>
+          </li>
+        </>
+      ) : (
+        <>
+          {location?.pathname === "/login" && (
+            <li>
+              <Link
+                to="/"
+                className="font-medium tracking-wide text-black btn btn-sm btn-primary"
+              >
+                Register
+              </Link>
+            </li>
+          )}
+          {location?.pathname === "/" && (
+            <li>
+              <Link
+                to="/login"
+                className="font-medium tracking-wide text-black btn btn-sm btn-primary"
+              >
+                Login
+              </Link>
+            </li>
+          )}
+        </>
+      )}
     </>
   );
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
       <div className="relative flex items-center justify-between">
-        <a
-          href="/"
-          aria-label="Company"
-          title="Company"
-          className="inline-flex items-center"
-        >
+        <p className="inline-flex items-center">
           <img src={logo} alt="" className="max-w-[50%]" />
-        </a>
+        </p>
         <ul className="flex items-center hidden space-x-8 lg:flex">{menu}</ul>
         <div className="lg:hidden">
           <button
@@ -86,14 +112,9 @@ const Navbar = () => {
               <div className="p-5 bg-white border rounded shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <a
-                      href="/"
-                      aria-label="Company"
-                      title="Company"
-                      className="inline-flex items-center"
-                    >
+                    <p className="inline-flex items-center">
                       <img src={logo} alt="" className="max-w-[50%]" />
-                    </a>
+                    </p>
                   </div>
                   <div>
                     <button
