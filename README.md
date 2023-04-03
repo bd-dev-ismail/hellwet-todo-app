@@ -1,5 +1,7 @@
 # Getting Started with Create React App
 
+Primary: #FADF68
+secondary: #3A4AC3
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
