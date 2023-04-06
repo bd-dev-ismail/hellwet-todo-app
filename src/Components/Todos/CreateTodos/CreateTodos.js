@@ -1,32 +1,51 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import { AuthContext } from "../../../context/AuthProvider/AuthProvider";
+import { toast } from "react-toastify";
+import Loader from "../../Loader/Loader";
+import { useNavigate } from "react-router-dom";
 const CreateTodos = () => {
   const [startDate, setStartDate] = useState(new Date());
+  const [loading, setLoading] = useState(false);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const handleAddTodo = (data) => {
+    setLoading(true);
     // console.log(data);
     const date = format(startDate, "PP");
     const todo = {
       todoName: data.todoName,
-      todoImage: data.image,
       todoDesc: data.todoDesc,
       creatorEmail: user?.email,
       date,
     };
     console.log(todo);
+    fetch("http://localhost:5000/todo", {
+      method: "POST",
+      body: JSON.stringify(todo),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        toast.success("Successfully Todo Add!!!");
+        setLoading(false);
+        navigate("/my-todos");
+      });
   };
-  //   console.log(startDate);
+
   return (
-    <div>
-      <section className="max-w-4xl p-6 mx-auto bg-secondary rounded-md shadow-md dark:bg-gray-800 mt-5">
+    <div className="px-4 lg:px-0">
+      <section className="max-w-4xl  p-6 mx-auto bg-secondary rounded-md shadow-md dark:bg-gray-800 lg:mt-10 mt-5">
         <h1 className="text-xl font-bold text-white capitalize dark:text-white">
           Add Todo
         </h1>
@@ -52,25 +71,6 @@ const CreateTodos = () => {
               )}
             </div>
 
-            <div>
-              <label
-                className="text-white dark:text-gray-200"
-                htmlFor="productPrice"
-              >
-                Todo Image URL
-              </label>
-              <input
-                {...register("image", { required: true })}
-                id="image"
-                type="text"
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-              />
-              {errors.image && (
-                <span className="mt-3 text-red-500">
-                  image field is required
-                </span>
-              )}
-            </div>
             <div>
               <label
                 className="text-white dark:text-gray-200"
@@ -121,11 +121,16 @@ const CreateTodos = () => {
             Note: Make Sure You Fill-Up Every Filed!
           </p>
           <div className="flex justify-center mt-6">
-            <input
-              type="submit"
-              value="Publish Todo"
-              className="btn btn-outline text-white"
-            />
+            {loading ? (
+              <Loader />
+            ) : (
+              <input
+                type="submit"
+                disabled={loading}
+                value="Publish Todo"
+                className="btn  btn-outline text-white"
+              />
+            )}
           </div>
         </form>
       </section>

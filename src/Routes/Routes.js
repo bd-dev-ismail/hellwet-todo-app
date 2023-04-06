@@ -6,6 +6,7 @@ import CreateTodos from "../Components/Todos/CreateTodos/CreateTodos";
 import DisplayTodos from "../Components/Todos/DisplayTodos/DisplayTodos";
 import UpdateTodos from "../Components/Todos/UpdateTodos/UpdateTodos";
 import Main from "../layouts/Main";
+import SingleTodo from "../Components/Todos/SingleTodo/SingleTodo";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,13 @@ export const router = createBrowserRouter([
         element: <CreateTodos />,
       },
       { path: "/my-todos", element: <DisplayTodos /> },
+      {
+        path: "/my-todos/details/:id",
+
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/signle-todo/${params.id}`),
+        element: <SingleTodo />,
+      },
     ],
   },
 ]);
