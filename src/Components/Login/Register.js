@@ -1,13 +1,15 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import img from "../../assets/login-register.png";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 import Loader from "../Loader/Loader";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 const Register = () => {
   const { user, registerUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   console.log(user);
   const {
     register,
@@ -24,6 +26,7 @@ const Register = () => {
         if (user.uid) {
           toast.success("Successfully Register!!!");
           setLoading(false);
+          navigate("/create-todos");
         }
       })
       .catch((error) => {
@@ -33,6 +36,10 @@ const Register = () => {
   };
   return (
     <div className="container mx-auto">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Register -Hellwet Todo</title>
+      </Helmet>
       <div className="text-center my-[2rem] lg:my-[5rem] ">
         <h3 className="text-2xl mb-2 lg:text-4xl font-semibold text-secondary ">
           Welcome To Hellwet Todo App

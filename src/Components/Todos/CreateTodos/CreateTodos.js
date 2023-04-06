@@ -6,6 +6,7 @@ import { AuthContext } from "../../../context/AuthProvider/AuthProvider";
 import { toast } from "react-toastify";
 import Loader from "../../Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 const CreateTodos = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ const CreateTodos = () => {
       date: startDate,
     };
     console.log(todo);
-    fetch("http://localhost:5000/todo", {
+    fetch("https://mern-todo-app-server-red.vercel.app/todo", {
       method: "POST",
       body: JSON.stringify(todo),
       headers: {
@@ -45,6 +46,10 @@ const CreateTodos = () => {
 
   return (
     <div className="px-4 lg:px-0">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Create Todo -Hellwet Todo</title>
+      </Helmet>
       <section className="max-w-4xl  p-6 mx-auto bg-secondary rounded-md shadow-md dark:bg-gray-800 lg:mt-10 mt-5">
         <h1 className="text-xl font-bold text-white capitalize dark:text-white">
           Add Todo

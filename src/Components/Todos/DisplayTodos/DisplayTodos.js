@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 import Loader from "../../Loader/Loader";
 import { AuthContext } from "../../../context/AuthProvider/AuthProvider";
 import { format } from "date-fns";
+import { Helmet } from "react-helmet";
 const DisplayTodos = () => {
   const { user } = useContext(AuthContext);
   const { data: todos = [], isLoading } = useQuery({
     queryKey: ["todos", user?.email],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/todo?email=${user?.email}`
+        `https://mern-todo-app-server-red.vercel.app/todo?email=${user?.email}`
       );
       const data = await res.json();
       return data.data;
@@ -50,6 +51,10 @@ const DisplayTodos = () => {
   }
   return (
     <div className="mx-auto px-4  sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>My Todos -Hellwet Todo</title>
+      </Helmet>
       <div>
         {todos.length ? (
           <>

@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import Loader from "../../Loader/Loader";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const UpdateModal = ({ todo }) => {
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(new Date(todo.date));
+  const navigate = useNavigate();
   const handleUpdate = (e) => {
+    setLoading(true);
     e.preventDefault();
 
     const updatedTodo = {
@@ -13,9 +17,23 @@ const UpdateModal = ({ todo }) => {
       date: startDate,
       todoDesc: e.target.desc.value,
       todoName: e.target.todoName.value,
-      _id: todo._id,
     };
     console.log(updatedTodo);
+    fetch(`https://mern-todo-app-server-red.vercel.app/update/${todo._id}`, {
+      method: "PUT",
+      body: JSON.stringify(updatedTodo),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "update data");
+        toast.success("Successfully Updated Todo!!");
+        navigate("/my-todos");
+        setLoading(false);
+        console.log(data);
+      });
   };
   return (
     <div>
@@ -108,12 +126,15 @@ const UpdateModal = ({ todo }) => {
                   {loading ? (
                     <Loader />
                   ) : (
-                    <input
-                      type="submit"
-                      disabled={loading}
-                      value="Update Todo"
-                      className="btn  btn-outline text-black"
-                    />
+                    <>
+                      <input
+                        type="submit"
+                        disabled={loading}
+                        value="Update Todo"
+                        id="todo-modal"
+                        className="btn  btn-outline text-black"
+                      />
+                    </>
                   )}
                 </div>
               </form>

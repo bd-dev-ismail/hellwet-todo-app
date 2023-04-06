@@ -9,7 +9,7 @@ const Navbar = () => {
   const handleLogOut = () => {
     logoutUser()
       .then(() => {
-        toast.success("Successfully Logout!!!");
+        toast.error("Logging Out!!!");
       })
       .catch((error) => {
         toast.error(error.message);
@@ -44,7 +44,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/"
+              to="/login"
               onClick={handleLogOut}
               className="font-medium tracking-wide text-black btn btn-sm btn-primary"
             >
@@ -108,7 +108,7 @@ const Navbar = () => {
             </svg>
           </button>
           {isMenuOpen && (
-            <div className="absolute top-0 left-0 w-full">
+            <div className="absolute top-0 z-40 left-0 w-full">
               <div className="p-5 bg-white border rounded shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div>

@@ -7,6 +7,7 @@ import DisplayTodos from "../Components/Todos/DisplayTodos/DisplayTodos";
 
 import Main from "../layouts/Main";
 import SingleTodo from "../Components/Todos/SingleTodo/SingleTodo";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -24,15 +25,32 @@ export const router = createBrowserRouter([
       },
       {
         path: "/create-todos",
-        element: <CreateTodos />,
+        element: (
+          <PrivateRoute>
+            <CreateTodos />
+          </PrivateRoute>
+        ),
       },
-      { path: "/my-todos", element: <DisplayTodos /> },
+      {
+        path: "/my-todos",
+        element: (
+          <PrivateRoute>
+            <DisplayTodos />
+          </PrivateRoute>
+        ),
+      },
       {
         path: "/my-todos/details/:id",
 
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/signle-todo/${params.id}`),
-        element: <SingleTodo />,
+          fetch(
+            `https://mern-todo-app-server-red.vercel.app/signle-todo/${params.id}`
+          ),
+        element: (
+          <PrivateRoute>
+            <SingleTodo />
+          </PrivateRoute>
+        ),
       },
     ],
   },

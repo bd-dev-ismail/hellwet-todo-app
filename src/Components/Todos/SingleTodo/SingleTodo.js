@@ -4,6 +4,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import Loader from "../../Loader/Loader";
 import UpdateModal from "../UpdateModal/UpdateModal";
 import { format } from "date-fns";
+import { Helmet } from "react-helmet";
 
 const SingleTodo = () => {
   const [loading, setLoading] = useState(false);
@@ -26,12 +27,15 @@ const SingleTodo = () => {
       if (result.isConfirmed) {
         console.log("I want to Delete");
 
-        fetch(`http://localhost:5000/todo/${todo.data._id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-type": "application/json",
-          },
-        })
+        fetch(
+          `https://mern-todo-app-server-red.vercel.app/todo/${todo.data._id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -44,6 +48,10 @@ const SingleTodo = () => {
   console.log(todo);
   return (
     <div className="px-4 py-5 flex justify-center items-center h-[600px] lg:h-[750px] mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Details Todo -Hellwet Todo</title>
+      </Helmet>
       {loading && <Loader />}
       <div className="card w-full  bg-secondary text-white">
         <div className="card-body">
