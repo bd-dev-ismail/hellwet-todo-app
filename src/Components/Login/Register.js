@@ -116,8 +116,6 @@ const Register = () => {
                   </p>
                 )}
               </div>
-
-              {/* <div className="mb-1 sm:mb-2 text-error">{error}</div> */}
               <div className="mt-4 mb-2 sm:mb-4">
                 <button
                   type="submit"
