@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import Loader from "../../Loader/Loader";
+import UpdateModal from "../UpdateModal/UpdateModal";
+import { format } from "date-fns";
 
 const SingleTodo = () => {
   const [loading, setLoading] = useState(false);
@@ -39,6 +41,7 @@ const SingleTodo = () => {
       }
     });
   };
+  console.log(todo);
   return (
     <div className="px-4 py-5 flex justify-center items-center h-[600px] lg:h-[750px] mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
       {loading && <Loader />}
@@ -46,9 +49,15 @@ const SingleTodo = () => {
         <div className="card-body">
           <h2 className="card-title">Todo Name: {todo.data?.todoName}</h2>
           <p className="my-10">Description: {todo.data?.todoDesc}</p>
-          <p className="font-semibold">Date: {todo.data?.date}</p>
+          <p className="font-semibold">
+            Date:{" "}
+            {todo.data.date ? format(new Date(todo.data?.date), "PP") : null}
+          </p>
           <div className="card-actions justify-center py-5 gap-4 lg:gap-16">
-            <button className="btn btn-primary text-black">Update Todo</button>
+            <label htmlFor="todo-modal" className="btn btn-primary text-black">
+              Update Todo
+            </label>
+
             <button
               onClick={handleDelete}
               className="btn btn-error text-white "
@@ -58,6 +67,7 @@ const SingleTodo = () => {
           </div>
         </div>
       </div>
+      <UpdateModal todo={todo.data} />
     </div>
   );
 };

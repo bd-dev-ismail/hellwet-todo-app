@@ -19,12 +19,12 @@ const CreateTodos = () => {
   const handleAddTodo = (data) => {
     setLoading(true);
     // console.log(data);
-    const date = format(startDate, "PP");
+    // const date = format(startDate, "PP");
     const todo = {
       todoName: data.todoName,
       todoDesc: data.todoDesc,
       creatorEmail: user?.email,
-      date,
+      date: startDate,
     };
     console.log(todo);
     fetch("http://localhost:5000/todo", {

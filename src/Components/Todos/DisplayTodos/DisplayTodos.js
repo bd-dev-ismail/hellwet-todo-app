@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import Loader from "../../Loader/Loader";
 import { AuthContext } from "../../../context/AuthProvider/AuthProvider";
-
+import { format } from "date-fns";
 const DisplayTodos = () => {
   const { user } = useContext(AuthContext);
   const { data: todos = [], isLoading } = useQuery({
@@ -32,7 +32,9 @@ const DisplayTodos = () => {
             <div className="card-body">
               <h2 className="card-title">{todo?.todoName}</h2>
               <p>{todo?.todoDesc.slice(0, 50)}...</p>
-              <p className="font-semibold">Date: {todo?.date}</p>
+              <p className="font-semibold">
+                Date: {todo?.date ? format(new Date(todo.date), "PP") : null}
+              </p>
               <div className="card-actions justify-end">
                 <Link to={`details/${todo._id}`}>
                   <button className="btn btn-sm btn-secondary text-white">
